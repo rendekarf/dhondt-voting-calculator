@@ -11,7 +11,7 @@ root.render(
       Credit:
       <a
         href="https://github.com/berkaysson/dhondt-system-calculator"
-        style={{ color: 'var(--theme-color)' }}
+        style={{ color: 'var(--theme-color)', marginLeft: '5px' }}
       >@berkaysson</a>
     </div>
   </React.StrictMode>
