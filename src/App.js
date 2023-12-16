@@ -33,8 +33,11 @@ function App() {
   const [electionData, setElectionData] = useState({
     district: null,
     totalSeats: 0,
+    winnerSeats: 0,
+    threshold: 0,
     numberOfParty: NUMBER_OF_PARTIES,
-    parties: isDistrictSelected ? PARTIES.slice(0, NUMBER_OF_PARTIES) : MOCK_PARTIES
+    // parties: isDistrictSelected ? PARTIES.slice(0, NUMBER_OF_PARTIES) : MOCK_PARTIES
+    parties: PARTIES.slice(0, NUMBER_OF_PARTIES)
   });
 
   useEffect(() => {
@@ -46,7 +49,10 @@ function App() {
       district: isDistrictSelected ? electionData.district : null,
       totalSeats: isDistrictSelected ? electionData.totalSeats : 0,
       numberOfParty: NUMBER_OF_PARTIES,
-      parties: isDistrictSelected ? PARTIES.slice(0, NUMBER_OF_PARTIES) : MOCK_PARTIES
+      winnerSeats: 0,
+      threshold: 0,
+      // parties: isDistrictSelected ? PARTIES.slice(0, NUMBER_OF_PARTIES) : MOCK_PARTIES
+      parties: PARTIES.slice(0, NUMBER_OF_PARTIES)
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDistrictSelected, electionData.district]);
@@ -56,34 +62,38 @@ function App() {
     const newElectionData = {
       district: isDistrictSelected ? electionData.district : null,
       totalSeats: isDistrictSelected ? electionData.district.totalSeats : parseInt(event.target.totalSeats.value),
+      winnerSeats: parseInt(event.target.winnerSeats.value),
       numberOfParty: NUMBER_OF_PARTIES,
       parties: [...Array(electionData.numberOfParty)].map((_, i) => {
-        const id = isDistrictSelected ? PARTIES[i].id : MOCK_PARTIES[i].id;
-        const partyName = isDistrictSelected ? PARTIES[i].name : MOCK_PARTIES[i].name;
+        const id = PARTIES[i].id;
+        const partyName = PARTIES[i].name;
         const votes = isNaN(parseFloat(event.target[id].value))
           ? 0
           : parseFloat(event.target[id].value);
-        const abb = isDistrictSelected ? PARTIES[i].abb : MOCK_PARTIES[i].abb;
+        const abb = PARTIES[i].abb;
+        const threshold = parseInt(event.target.threshold.value);
         return {
           name: partyName,
-          votes: votes,
+          votes: votes > threshold ? votes - threshold : 0 ,
           seats: 0,
+          winnerSeats: 0,
           allocationHistory: [],
-          id:id,
-          abb:abb
+          id: id,
+          abb: abb
         };
       }),
     };
-    const calculatedParties = calculateResults(newElectionData.parties, newElectionData.totalSeats);
+    const calculatedParties =
+      calculateResults(newElectionData.parties, newElectionData.totalSeats, newElectionData.winnerSeats);
     setElectionData({
       ...newElectionData,
       parties: calculatedParties
     });
   };
 
-  const calculateResults = (parties, totalSeats) => {
+  const calculateResults = (parties, totalSeats, winnerSeats) => {
     let calculatedParties = [...parties];
-    for (let i = 0; i < totalSeats; i++) {
+    for (let i = 0; i < (totalSeats - winnerSeats); i++) {
       let max = 0;
       let index = 0;
 
@@ -106,6 +116,12 @@ function App() {
         ).toFixed(4), // calculate the percentage of votes that the party received for the current seat and add "%" symbol
       });
     }
+    const mostVotedParty = calculatedParties.reduce(
+      (prev, current) => {
+        return prev.votes < current.votes ? current : prev
+      }
+    );
+    mostVotedParty.winnerSeats = winnerSeats;
     return calculatedParties;
   };
 
@@ -115,7 +131,7 @@ function App() {
       const newDistrict = DISTRICTS[newDistrictName];
       setElectionData({
         ...electionData,
-        district:{...newDistrict, districtName:newDistrictName},
+        district: {...newDistrict, districtName:newDistrictName},
         totalSeats:newDistrict.totalSeats
       })
     }

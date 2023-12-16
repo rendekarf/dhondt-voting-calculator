@@ -69,7 +69,7 @@ function Result({ results }) {
                 <PartyVotes>{party.votes} OY</PartyVotes>
               </TableCell>
               <TableCell>
-                <PartySeats>{party.seats} VEKİL</PartySeats>
+                <PartySeats>{party.seats} {`${party.winnerSeats > 0 ? `(+ ${party.winnerSeats})` : ''}`} VEKİL</PartySeats>
               </TableCell>
             </TableRow>
           ))}

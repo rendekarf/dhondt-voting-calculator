@@ -33,7 +33,7 @@ const FormWrapper = styled.form`
   gap: var(--gap);
 `;
 
-const InputForm = ({ numberOfParty, onCalculateResults, parties, totalSeats, isDistrictSelected,onDistrictSelection }) => {
+const InputForm = ({ numberOfParty, onCalculateResults, parties, totalSeats, winnerSeats, threshold, isDistrictSelected,onDistrictSelection }) => {
   const partyForms = [];
 
   for (let i = 1; i <= numberOfParty; i++) {
@@ -42,7 +42,7 @@ const InputForm = ({ numberOfParty, onCalculateResults, parties, totalSeats, isD
 
   return (
     <InputFormWrapper>
-    <DistrictSelectionForm onDistrictSelection = {onDistrictSelection} isDistrictSelected={isDistrictSelected} />
+      {/*<DistrictSelectionForm onDistrictSelection = {onDistrictSelection} isDistrictSelected={isDistrictSelected} />*/}
       <FormWrapper onSubmit={onCalculateResults}>
         <div>
           <Input
@@ -54,6 +54,28 @@ const InputForm = ({ numberOfParty, onCalculateResults, parties, totalSeats, isD
             step={1}
             inputValue={totalSeats}
             isActive={!isDistrictSelected}
+          />
+        </div>
+        <div>
+          <Input
+              labelText="Kontenjan"
+              inputType="number"
+              id="winnerSeats"
+              name="winnerSeats"
+              styleType="secondary"
+              step={1}
+              inputValue={winnerSeats}
+          />
+        </div>
+        <div>
+          <Input
+              labelText="Çevre Barajı"
+              inputType="number"
+              id="threshold"
+              name="threshold"
+              styleType="secondary"
+              step={1}
+              inputValue={threshold}
           />
         </div>
         {partyForms}

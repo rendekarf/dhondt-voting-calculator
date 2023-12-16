@@ -43,9 +43,9 @@ function Header() {
   return (
     <HeaderWrapper>
       <InfoWrapper>
-        <h1>D'Hondt Sistemi Milletvekili hesaplayıcı</h1>
+        <h1>D'Hondt Sistemi Vekil Seçimi hesaplayıcı</h1>
         <p>
-          Programa vekil sayısını girin ve her parti için tahmini oy sayısını
+          Programa vekil sayısını, kontenjan sayısını, çevre barajını ve her parti için tahmini oy sayısını
           girin. "Hesapla" butonuna tıklayın ve{" "}
           <a
             href="https://tr.wikipedia.org/wiki/D%27Hondt_sistemi"
@@ -74,10 +74,6 @@ function Header() {
           bölünerek diğer koltuklar dağıtılır. Bu sistem, hem büyük partilerin
           hem de küçük partilerin temsil edilmesini amaçlar.
         </p>
-        <WarningMessage>
-          {" "}
-          Her bölge değişikliğinde 'HESAPLA' butonuna basınız.
-        </WarningMessage>
       </InfoWrapper>
     </HeaderWrapper>
   );

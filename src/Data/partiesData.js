@@ -55,9 +55,9 @@ export const PARTIES = [
   },
   {
     id: "party-7",
-    name: "Yeşiller ve Sol Gelecek Partisi",
+    name: "DEM Parti",
     ittifak: "Emek ve Özgürlük İttifakı",
-    abb: "YSP/HDP",
+    abb: "DEM",
     votes: 0,
     seats: 0,
     allocationHistory: [],
